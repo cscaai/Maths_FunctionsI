@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSCA Mathematics Mock Exam - Mathematics: Functions (Unit Test 3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<!-- MathJax for rendering Mathematical LaTeX expressions -->
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  /* ============ CSCA BRAND DESIGN TOKENS (GREEN ACCENT) ============ */
+  :root {
+    --ink: #0F172A;
+    --ink-soft: #475569;
+    --canvas: #F8FAFC;
+    --card: #FFFFFF;
+    --line: #E2E8F0;
+
+    /* Brand Green Accent */
+    --primary: #059669;
+    --primary-dark: #047857;
+    --primary-light: #10B981;
+    --primary-tint: #ECFDF5;
+    --primary-glow: rgba(16, 185, 129, 0.25);
+
+    /* Brand Orange Dot Accent for csca.ai */
+    --brand-orange: #F97316;
+
+    --mint: #10B981;
+    --mint-tint: #D1FAE5;
+    --amber: #F59E0B;
+    --amber-tint: #FEF3C7;
+    --crimson: #EF4444;
+    --crimson-tint: #FEE2E2;
+
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+    --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.08);
+    --shadow-soft: 0 4px 14px rgba(15, 23, 42, 0.05);
+
+    --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; padding: 0; }
+  body {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  button, input { font-family: inherit; }
+  button { appearance: none; border: none; cursor: pointer; background: none; color: inherit; }
+
+  .screen { display: none; min-height: 100vh; position: relative; }
+  .screen.is-active { display: flex; flex-direction: column; }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+  }
+  @keyframes pulseBar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .55; }
+  }
+
+  /* ============ BULLETPROOF INLINE SVG LOGO ============ */
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    color: var(--ink);
+    user-select: none;
+    vertical-align: middle;
+  }
+  .brand-logo-white {
+    color: #FFFFFF !important;
+  }
+  .csca-logo-svg {
+    display: block;
+    height: 28px;
+    width: auto;
+    overflow: visible;
+  }
+
+  /* ============ ENTRY SCREEN & INTERACTIVE CANVAS ============ */
+  #screen-entry {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    min-height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 40%, #064E3B 0%, #022C22 60%, #011C15 100%);
+  }
+
+  #entry-bg-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  .entry-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 470px;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(18px);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    padding: 40px 36px 32px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    animation: fadeInUp .6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .entry-brand-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .exam-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    background: var(--primary-tint);
+    color: var(--primary-dark);
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid #A7F3D0;
+  }
+
+  .entry-card h1 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+
+  .entry-sub {
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 24px;
+  }
+
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--line);
+    font-size: 15px;
+    color: var(--ink);
+    background: #f8fafc;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .field input::placeholder { color: #94A3B8; }
+  .field input:focus-visible {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-tint);
+    background: #fff;
+  }
+  .field input.shake { animation: shake .4s ease; border-color: var(--crimson); }
+
+  .btn {
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: var(--radius-sm);
+    padding: 13px 20px;
+    transition: transform .12s ease, box-shadow .12s ease, background .15s, border-color .15s, color .15s;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible { outline: 3px solid var(--primary-tint); outline-offset: 2px; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-block { width: 100%; }
+  .btn-primary { 
+    background: var(--primary); 
+    color: #fff; 
+    box-shadow: 0 8px 20px var(--primary-glow); 
+  }
+  .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+  .btn-ghost { background: transparent; color: var(--ink-soft); border: 1.5px solid var(--line); }
+  .btn-ghost:hover:not(:disabled) { border-color: var(--primary); color: var(--primary-dark); background: var(--primary-tint); }
+
+  .entry-meta {
+    margin-top: 22px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+  }
+  .entry-meta span {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    background: #F1F5F9;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 12px;
+    color: var(--ink-soft);
+  }
+
+  /* ============ EXAM SCREEN ============ */
+  .timer-track { height: 6px; width: 100%; background: var(--line); flex-shrink: 0; }
+  .timer-fill {
+    height: 100%; width: 100%;
+    background: linear-gradient(90deg, #34D399, var(--primary));
+    transition: width 1s linear, background .4s ease;
+  }
+  .timer-track.critical .timer-fill {
+    background: linear-gradient(90deg, #ff6a5f, var(--crimson));
+    animation: pulseBar 1s ease-in-out infinite;
+  }
+
+  .exam-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    background: #064E3B;
+    color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(6, 78, 59, 0.25);
+  }
+  .exam-header-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .exam-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .01em;
+  }
+  .exam-title small {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 400;
+    letter-spacing: 0;
+    opacity: .85;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .timer-display {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 17px;
+    background: rgba(255, 255, 255, 0.16);
+    padding: 6px 16px;
+    border-radius: 999px;
+    letter-spacing: .03em;
+    transition: background .2s ease;
+  }
+  .timer-display.critical { background: rgba(239, 68, 68, 0.95); }
+
+  .exam-body {
+    flex: 1;
+    display: flex;
+    gap: 24px;
+    padding: 24px 28px 40px;
+    align-items: flex-start;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .sidebar {
+    width: 270px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: sticky;
+    top: 24px;
+  }
+  .student-card {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    box-shadow: var(--shadow-soft);
+  }
+  .avatar {
+    width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+    background: var(--primary-tint); color: var(--primary-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-family: var(--font-display);
+    border: 1.5px solid #A7F3D0;
+  }
+  .student-name { font-weight: 700; font-size: 14px; line-height: 1.3; color: var(--ink); }
+  .student-sub { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+  /* Legend Indicators */
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: var(--ink-soft); padding: 0 2px; }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .indicator-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .indicator-dot.unanswered { background: #CBD5E1; }
+  .indicator-dot.answered { background: var(--primary); }
+  .indicator-dot.marked { background: var(--brand-orange); }
+
+  .grid-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-soft);
+  }
+  .grid-card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .grid-card-header .label { font-weight: 700; font-size: 13px; }
+  .grid-card-header .count { font-family: var(--font-mono); font-size: 12px; color: var(--primary-dark); font-weight: 700; }
+
+  .q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .q-cell {
+    aspect-ratio: 1/1;
+    border-radius: 8px;
+    border: 1.5px solid var(--line);
+    background: #fbfcff;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s ease;
+    position: relative;
+  }
+  .q-cell:hover { border-color: var(--primary); color: var(--primary-dark); }
+  .q-cell.answered { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .q-cell.marked::after {
+    content: ''; position: absolute; top: -3px; right: -3px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--brand-orange); border: 2px solid var(--card);
+  }
+  .q-cell.current {
+    box-shadow: 0 0 0 3px var(--primary-tint);
+    border-color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* Question Panel */
+  .question-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+  .question-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .question-counter {
+    font-family: var(--font-mono); font-weight: 600; font-size: 13px;
+    color: var(--primary-dark); background: var(--primary-tint);
+    border: 1px solid #A7F3D0; padding: 8px 16px; border-radius: 999px;
+  }
+
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow-card);
+  }
+  .question-topic-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px; font-weight: 700; letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--primary-dark); background: var(--primary-tint);
+    border: 1px solid #A7F3D0;
+    padding: 4px 10px; border-radius: 6px; margin-bottom: 16px;
+  }
+  .question-text {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.55;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+
+  .options-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+  .option-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--line);
+    background: #fbfcfe;
+    cursor: pointer;
+    transition: all .15s ease;
+    font-size: 15px;
+  }
+  .option-item:hover { border-color: var(--primary); background: #F0FDF4; }
+  .option-item.selected {
+    border-color: var(--primary);
+    background: var(--primary-tint);
+    color: var(--primary-dark);
+    font-weight: 600;
+  }
+  .option-radio {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; background: #fff;
+    transition: all .15s ease;
+  }
+  .option-item.selected .option-radio {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+  .option-radio::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%; background: #fff;
+    opacity: 0; transform: scale(0); transition: all .15s ease;
+  }
+  .option-item.selected .option-radio::after { opacity: 1; transform: scale(1); }
+
+  .question-actions {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 20px; border-top: 1px solid var(--line);
+  }
+
+  /* ============ OUTRO / RESULT SCREEN ============ */
+  #screen-outro {
+    align-items: center;
+    padding: 40px 20px 60px;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .outro-card {
+    width: 100%;
+    background: var(--card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-card);
+    padding: 36px;
+    margin-bottom: 24px;
+  }
+  .score-header { text-align: center; margin-bottom: 28px; }
+  .score-header h2 { font-family: var(--font-display); font-size: 26px; font-weight: 800; margin: 10px 0 8px; }
+  .score-badge {
+    display: inline-block;
+    padding: 6px 18px; border-radius: 999px; font-weight: 700; font-size: 14px;
+    font-family: var(--font-mono); margin-bottom: 8px;
+  }
+  .score-badge.passed { background: var(--primary-tint); color: var(--primary-dark); border: 1px solid #A7F3D0; }
+  .score-badge.failed { background: var(--crimson-tint); color: var(--crimson); border: 1px solid #FECACA; }
+
+  .score-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin-bottom: 32px; text-align: center;
+  }
+  .stat-box {
+    background: #f8fafc; border: 1px solid var(--line);
+    padding: 16px 12px; border-radius: var(--radius-md);
+  }
+  .stat-val { font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--ink); }
+  .stat-lbl { font-size: 12px; color: var(--ink-soft); margin-top: 4px; }
+
+  .review-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin: 0 0 16px; }
+  .review-list { display: flex; flex-direction: column; gap: 16px; }
+  .review-item {
+    background: #fbfcfe; border: 1px solid var(--line);
+    border-radius: var(--radius-md); padding: 20px;
+  }
+  .review-item.is-correct { border-left: 5px solid var(--primary); }
+  .review-item.is-incorrect { border-left: 5px solid var(--crimson); }
+  .review-item.is-skipped { border-left: 5px solid var(--brand-orange); }
+
+  .review-q-num { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; }
+  .review-q-text { font-weight: 600; font-size: 15px; margin-bottom: 12px; }
+  .review-ans { font-size: 14px; line-height: 1.6; margin-bottom: 8px; }
+  .review-ans span { font-weight: 600; }
+  .review-ans.user-ans { color: var(--ink-soft); }
+  .review-ans.correct-ans { color: var(--primary-dark); }
+  .review-exp {
+    margin-top: 10px; padding: 12px 14px; border-radius: 6px;
+    font-size: 13.5px; color: #334155; line-height: 1.5;
+    background: #f4f6fb; border: 1px dashed var(--line);
+  }
+
+  @media (max-width: 820px) {
+    .exam-body { flex-direction: column; padding: 16px; }
+    .sidebar { width: 100%; position: static; }
+    .score-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ ENTRY SCREEN ============ -->
+  <div id="screen-entry" class="screen is-active">
+    <canvas id="entry-bg-canvas"></canvas>
+    
+    <div class="entry-card">
+      <div class="entry-brand-header">
+        <div class="brand-logo" aria-label="csca.ai">
+          <svg class="csca-logo-svg" viewBox="0 0 108 30" height="28" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="23" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="800" font-size="26" fill="currentColor" letter-spacing="-0.03em">csca<tspan fill="#F97316">.</tspan>ai</text>
+          </svg>
+        </div>
+        <span class="exam-badge">Unit Test 3</span>
+      </div>
+
+      <h1>Mathematics Assessment</h1>
+      <p class="entry-sub">Topic Assessment: <strong>Mathematics — Functions (Unit Test 3)</strong></p>
+      
+      <form id="entry-form" onsubmit="handleStartExam(event)">
+        <div class="field">
+          <label for="student-name-input">Candidate Name</label>
+          <input type="text" id="student-name-input" placeholder="FirstName LastName" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="student-id-input">Candidate Number <span style="font-weight:400; opacity:.7;">(Optional)</span></label>
+          <input type="text" id="student-id-input" placeholder="e.g. CSCA-MATH-2026">
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block">Begin Assessment &rarr;</button>
+      </form>
+
+      <div class="entry-meta">
+        <span>⏱ 45 Minutes</span>
+        <span>📝 25 Questions</span>
+        <span>🎯 Unit Test 3</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ EXAM SCREEN ============ -->
+  <div id="screen-exam" class="screen">
+    <div class="timer-track" id="timer-track">
+      <div class="timer-fill" id="timer-fill"></div>
+    </div>
+
+    <header class="exam-header">
+      <div class="exam-header-left">
+        <div class="brand-logo brand-logo-white" aria-label="csca.ai">
+          <svg class="csca-logo-svg" viewBox="0 0 108 30" height="28" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="23" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="800" font-size="26" fill="currentColor" letter-spacing="-0.03em">csca<tspan fill="#F97316">.</tspan>ai</text>
+          </svg>
+        </div>
+        <div style="border-left:1px solid rgba(255,255,255,0.25); padding-left:16px;">
+          <div class="exam-title">CSCA Mathematics Mock Exam</div>
+          <small style="opacity:0.85;">Topic: Mathematics (Functions) — Unit Test 3</small>
+        </div>
+      </div>
+      <div class="timer-display" id="timer-display">45:00</div>
+    </header>
+
+    <main class="exam-body">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="student-card">
+          <div class="avatar" id="student-avatar">FL</div>
+          <div>
+            <div class="student-name" id="display-student-name">FirstName LastName</div>
+            <div class="student-sub" id="display-student-id">ID: N/A</div>
+          </div>
+        </div>
+
+        <div class="grid-card">
+          <div class="grid-card-header">
+            <span class="label">Questions</span>
+            <span class="count" id="progress-count">0 / 25 Answered</span>
+          </div>
+          <div class="q-grid" id="q-grid">
+            <!-- 25 Cells populated by JS -->
+          </div>
+        </div>
+
+        <div class="legend">
+          <span><i class="indicator-dot unanswered"></i> Unanswered</span>
+          <span><i class="indicator-dot answered"></i> Answered</span>
+          <span><i class="indicator-dot marked"></i> Marked</span>
+        </div>
+      </aside>
+
+      <!-- QUESTION PANEL -->
+      <section class="question-panel">
+        <div class="question-nav">
+          <div class="question-counter" id="question-counter">Question 1 of 25</div>
+          <button class="btn btn-ghost" id="btn-mark" onclick="toggleMarkQuestion()">🔖 Mark for Review</button>
+        </div>
+
+        <div class="question-card">
+          <span class="question-topic-tag">Mathematics — Functions (Unit Test 3)</span>
+          <div class="question-text" id="question-text">
+            Question text will load here...
+          </div>
+
+          <div class="options-list" id="options-list">
+            <!-- Options populated by JS -->
+          </div>
+
+          <div class="question-actions">
+            <button class="btn btn-ghost nav-btn" id="btn-prev" onclick="navigateQuestion(-1)">&larr; Previous</button>
+            <div style="display:flex; gap:10px;">
+              <button class="btn btn-ghost nav-btn" id="btn-next" onclick="navigateQuestion(1)">Next &rarr;</button>
+              <button class="btn btn-primary" onclick="confirmSubmitExam()">Finish &amp; Submit</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ============ OUTRO SCREEN ============ -->
+  <div id="screen-outro" class="screen">
+    <div class="outro-card">
+      <div class="score-header">
+        <div class="brand-logo" style="margin-bottom:12px;" aria-label="csca.ai">
+          <svg class="csca-logo-svg" viewBox="0 0 108 30" height="28" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="23" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-weight="800" font-size="26" fill="currentColor" letter-spacing="-0.03em">csca<tspan fill="#F97316">.</tspan>ai</text>
+          </svg>
+        </div>
+        <div class="score-badge" id="score-badge">PASSED</div>
+        <h2>Exam Performance Summary</h2>
+        <p style="color:var(--ink-soft); margin:0;">Candidate: <strong id="outro-student-name">FirstName LastName</strong></p>
+      </div>
+
+      <div class="score-stats">
+        <div class="stat-box">
+          <div class="stat-val" id="stat-score">0 / 25</div>
+          <div class="stat-lbl">Final Score</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-pct">0%</div>
+          <div class="stat-lbl">Percentage</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-correct">0</div>
+          <div class="stat-lbl">Correct Answers</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-time">0m 0s</div>
+          <div class="stat-lbl">Time Spent</div>
+        </div>
+      </div>
+
+      <div id="export-status" style="text-align:center; font-size:13px; color:var(--ink-soft); margin-bottom:14px;"></div>
+
+      <div style="text-align:center;">
+        <button class="btn btn-primary" onclick="restartExam()">Restart Assessment</button>
+      </div>
+    </div>
+
+    <div class="outro-card">
+      <h3 class="review-title">Detailed Solutions &amp; Analysis</h3>
+      <div class="review-list" id="review-list">
+        <!-- Review items generated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCRIPTS ============ -->
+  <script>
+    /* ==========================================================================
+       1. QUESTION BANK: 25 Pure "Mapping and Functions" Questions (Unit Test 3)
+       ========================================================================== */
+    const questions = [
+      {
+        id: 1,
+        question: "The domain of the function $f(x) = \\frac{1}{\\sqrt{x + 2}}$ is ( )",
+        options: [
+          "A. $[-2, +\\infty)$",
+          "B. $(-2, +\\infty)$",
+          "C. $(-\\infty, -2)$",
+          "D. $(-\\infty, -2]$"
+        ],
+        correct: 1,
+        explanation: "For the square root in the denominator to be defined and non-zero, the expression under the radical must be strictly positive: $x + 2 > 0 \\implies x > -2$. Thus, the domain is $(-2, +\\infty)$."
+      },
+      {
+        id: 2,
+        question: "Which of the following functions is an even function? ( )",
+        options: [
+          "A. $f(x) = x^3$",
+          "B. $f(x) = x^2 + 1$",
+          "C. $f(x) = x + 1$",
+          "D. $f(x) = \\sqrt{x}$"
+        ],
+        correct: 1,
+        explanation: "A function is even if $f(-x) = f(x)$ for all $x$ in its domain. For $f(x) = x^2 + 1$, we have $f(-x) = (-x)^2 + 1 = x^2 + 1 = f(x)$, so it is an even function."
+      },
+      {
+        id: 3,
+        question: "Which of the following functions is an odd function? ( )",
+        options: [
+          "A. $f(x) = x^2 - 3$",
+          "B. $f(x) = x^3 + x$",
+          "C. $f(x) = |x|$",
+          "D. $f(x) = x^4$"
+        ],
+        correct: 1,
+        explanation: "A function is odd if $f(-x) = -f(x)$. For $f(x) = x^3 + x$, we have $f(-x) = (-x)^3 + (-x) = -x^3 - x = -(x^3 + x) = -f(x)$, satisfying the definition of an odd function."
+      },
+      {
+        id: 4,
+        question: "The domain of the function $f(x) = \\sqrt{3x - 6}$ is ( )",
+        options: [
+          "A. $(2, +\\infty)$",
+          "B. $[2, +\\infty)$",
+          "C. $(-\\infty, 2]$",
+          "D. $(-\\infty, 2)$"
+        ],
+        correct: 1,
+        explanation: "The radicand under a square root must be non-negative: $3x - 6 \\ge 0 \\implies 3x \\ge 6 \\implies x \\ge 2$. Therefore, the domain is $[2, +\\infty)$."
+      },
+      {
+        id: 5,
+        question: "The range of the function $f(x) = x^2 + 3$ is ( )",
+        options: [
+          "A. $(-\\infty, +\\infty)$",
+          "B. $[0, +\\infty)$",
+          "C. $[3, +\\infty)$",
+          "D. $(3, +\\infty)$"
+        ],
+        correct: 2,
+        explanation: "Since $x^2 \\ge 0$ for all real numbers $x$, adding $3$ gives $x^2 + 3 \\ge 3$. The minimum value is $3$ (achieved at $x = 0$), so the range is $[3, +\\infty)$."
+      },
+      {
+        id: 6,
+        question: "Which of the following functions is monotonically decreasing on $(-\\infty, +\\infty)$? ( )",
+        options: [
+          "A. $y = x^3$",
+          "B. $y = 2x + 1$",
+          "C. $y = -3x + 5$",
+          "D. $y = x^2$"
+        ],
+        correct: 2,
+        explanation: "A linear function $y = mx + b$ is monotonically decreasing on $\\mathbb{R}$ if its slope $m < 0$. Here, $y = -3x + 5$ has slope $m = -3 < 0$."
+      },
+      {
+        id: 7,
+        question: "The value of $\\sqrt[3]{-27} + \\sqrt{16}$ is ( )",
+        options: [
+          "A. $1$",
+          "B. $7$",
+          "C. $-1$",
+          "D. $-7$"
+        ],
+        correct: 0,
+        explanation: "Evaluating each radical separately: $\\sqrt[3]{-27} = -3$ and $\\sqrt{16} = 4$. Thus, $-3 + 4 = 1$."
+      },
+      {
+        id: 8,
+        question: "The domain of the function $f(x) = \\frac{\\sqrt{x - 1}}{x - 3}$ is ( )",
+        options: [
+          "A. $[1, +\\infty)$",
+          "B. $[1, 3) \\cup (3, +\\infty)$",
+          "C. $(3, +\\infty)$",
+          "D. $(1, 3)$"
+        ],
+        correct: 1,
+        explanation: "The radical requires $x - 1 \\ge 0 \\implies x \\ge 1$. The denominator requires $x - 3 \\neq 0 \\implies x \\neq 3$. Combining both conditions yields $[1, 3) \\cup (3, +\\infty)$."
+      },
+      {
+        id: 9,
+        question: "If $f(x) = 2x + 4$, then its inverse function $f^{-1}(x)$ is ( )",
+        options: [
+          "A. $y = \\frac{x - 4}{2}$",
+          "B. $y = \\frac{x + 4}{2}$",
+          "C. $y = 2x - 4$",
+          "D. $y = \\frac{1}{2x + 4}$"
+        ],
+        correct: 0,
+        explanation: "Set $y = 2x + 4$. Swap $x$ and $y$ to get $x = 2y + 4$. Solve for $y$: $2y = x - 4 \\implies y = \\frac{x - 4}{2}$."
+      },
+      {
+        id: 10,
+        question: "If $f(x)$ is an odd function defined on $\\mathbb{R}$ and $f(2) = 5$, then $f(-2) = $ ( )",
+        options: [
+          "A. $5$",
+          "B. $-5$",
+          "C. $\\frac{1}{5}$",
+          "D. $0$"
+        ],
+        correct: 1,
+        explanation: "By definition of an odd function, $f(-x) = -f(x)$. Substituting $x = 2$ gives $f(-2) = -f(2) = -5$."
+      },
+      {
+        id: 11,
+        question: "The domain of the function $f(x) = \\sqrt{4 - x^2}$ is ( )",
+        options: [
+          "A. $[-2, 2]$",
+          "B. $(-\\infty, -2] \\cup [2, +\\infty)$",
+          "C. $[0, 2]$",
+          "D. $(-2, 2)$"
+        ],
+        correct: 0,
+        explanation: "The expression under the radical must be non-negative: $4 - x^2 \\ge 0 \\implies x^2 \\le 4 \\implies -2 \\le x \\le 2$. So the domain is $[-2, 2]$."
+      },
+      {
+        id: 12,
+        question: "On which of the following intervals is $f(x) = x^2 - 4x + 3$ monotonically increasing? ( )",
+        options: [
+          "A. $(-\\infty, 2)$",
+          "B. $(2, +\\infty)$",
+          "C. $(-\\infty, 4)$",
+          "D. $(0, +\\infty)$"
+        ],
+        correct: 1,
+        explanation: "The vertex of the parabola $f(x) = x^2 - 4x + 3$ occurs at $x = -\\frac{-4}{2(1)} = 2$. Since the coefficient of $x^2$ is positive, the function decreases on $(-\\infty, 2)$ and increases on $(2, +\\infty)$."
+      },
+      {
+        id: 13,
+        question: "For $x < 0$, the simplified form of $\\sqrt{x^2} + \\sqrt[3]{x^3}$ is ( )",
+        options: [
+          "A. $2x$",
+          "B. $0$",
+          "C. $-2x$",
+          "D. $x$"
+        ],
+        correct: 1,
+        explanation: "For $x < 0$, $\\sqrt{x^2} = |x| = -x$, while $\\sqrt[3]{x^3} = x$. Therefore, $\\sqrt{x^2} + \\sqrt[3]{x^3} = -x + x = 0$."
+      },
+      {
+        id: 14,
+        question: "Given $f(x) = x^2 + 1$, the value of $f(f(2))$ is ( )",
+        options: [
+          "A. $5$",
+          "B. $26$",
+          "C. $10$",
+          "D. $25$"
+        ],
+        correct: 1,
+        explanation: "First compute $f(2) = 2^2 + 1 = 5$. Then substitute into $f$: $f(f(2)) = f(5) = 5^2 + 1 = 26$."
+      },
+      {
+        id: 15,
+        question: "The range of the function $f(x) = \\sqrt{x - 2} + 1$ is ( )",
+        options: [
+          "A. $[0, +\\infty)$",
+          "B. $[1, +\\infty)$",
+          "C. $[2, +\\infty)$",
+          "D. $(1, +\\infty)$"
+        ],
+        correct: 1,
+        explanation: "The radical $\\sqrt{x - 2} \\ge 0$ for all $x \\ge 2$, with minimum value $0$ at $x = 2$. Adding $1$ yields $f(x) \\ge 1$, so the range is $[1, +\\infty)$."
+      },
+      {
+        id: 16,
+        question: "Which of the following functions is neither odd nor even? ( )",
+        options: [
+          "A. $y = x^4 + 1$",
+          "B. $y = x^3 - x$",
+          "C. $y = x^2 + x$",
+          "D. $y = 0$"
+        ],
+        correct: 2,
+        explanation: "For $f(x) = x^2 + x$, $f(-x) = (-x)^2 + (-x) = x^2 - x$. Note that $f(-x) \\neq f(x)$ and $f(-x) \\neq -f(x)$, so it is neither odd nor even."
+      },
+      {
+        id: 17,
+        question: "Let set $A = \\{1, 2, 3\\}$ and $B = \\{4, 5\\}$. Which of the following sets of ordered pairs represents a valid mapping from $A$ to $B$? ( )",
+        options: [
+          "A. $\\{(1, 4), (2, 5)\\}$",
+          "B. $\\{(1, 4), (1, 5), (2, 4), (3, 5)\\}$",
+          "C. $\\{(1, 4), (2, 4), (3, 5)\\}$",
+          "D. $\\{(1, 4), (2, 5), (3, 6)\\}$"
+        ],
+        correct: 2,
+        explanation: "A mapping from $A$ to $B$ requires that EVERY element in $A$ is paired with EXACTLY ONE element in $B$. Option C assigns every element in $A = \\{1,2,3\\}$ to an element in $B = \\{4,5\\}$ uniquely."
+      },
+      {
+        id: 18,
+        question: "Which of the following functions is monotonically increasing on the interval $(0, +\\infty)$? ( )",
+        options: [
+          "A. $y = -\\frac{1}{x}$",
+          "B. $y = \\frac{1}{x}$",
+          "C. $y = -x^2$",
+          "D. $y = 1 - x$"
+        ],
+        correct: 0,
+        explanation: "For $y = -\\frac{1}{x}$ on $x > 0$, as $x$ increases, $\\frac{1}{x}$ decreases, making $-\\frac{1}{x}$ increase. Hence, $y = -\\frac{1}{x}$ is monotonically increasing on $(0, +\\infty)$."
+      },
+      {
+        id: 19,
+        question: "The domain of the function $f(x) = \\frac{1}{|x| - 2}$ is ( )",
+        options: [
+          "A. $(-\\infty, 2) \\cup (2, +\\infty)$",
+          "B. $(-\\infty, -2) \\cup (-2, 2) \\cup (2, +\\infty)$",
+          "C. $[-2, 2]$",
+          "D. $(0, +\\infty)$"
+        ],
+        correct: 1,
+        explanation: "The denominator cannot equal zero: $|x| - 2 \\neq 0 \\implies |x| \\neq 2 \\implies x \\neq 2$ and $x \\neq -2$. Excluding these two points gives $(-\\infty, -2) \\cup (-2, 2) \\cup (2, +\\infty)$."
+      },
+      {
+        id: 20,
+        question: "For $a \\le 0$, the expression $\\sqrt[4]{a^4}$ simplifies to ( )",
+        options: [
+          "A. $a$",
+          "B. $-a$",
+          "C. $\\pm a$",
+          "D. $a^2$"
+        ],
+        correct: 1,
+        explanation: "The principal $n$-th root for an even integer $n$ satisfies $\\sqrt[n]{a^n} = |a|$. Since $a \\le 0$, $|a| = -a$."
+      },
+      {
+        id: 21,
+        question: "Which of the following pairs of functions represents identical functions? ( )",
+        options: [
+          "A. $f(x) = x$ and $g(x) = \\sqrt{x^2}$",
+          "B. $f(x) = x$ and $g(x) = (\\sqrt{x})^2$",
+          "C. $f(x) = x^2$ and $g(t) = t^2$",
+          "D. $f(x) = \\frac{x^2}{x}$ and $g(x) = x$"
+        ],
+        correct: 2,
+        explanation: "Two functions are identical if they have the exact same domain and correspondence rule. Variable names do not matter, so $f(x) = x^2$ and $g(t) = t^2$ both have domain $\\mathbb{R}$ and square inputs."
+      },
+      {
+        id: 22,
+        question: "If $f(x)$ is an even function and $g(x)$ is an odd function defined on $\\mathbb{R}$, then $h(x) = f(x) \\cdot g(x)$ is ( )",
+        options: [
+          "A. An even function",
+          "B. An odd function",
+          "C. Neither odd nor even",
+          "D. A constant function"
+        ],
+        correct: 1,
+        explanation: "Test $h(-x)$: $h(-x) = f(-x)g(-x) = f(x)(-g(x)) = -(f(x)g(x)) = -h(x)$. Since $h(-x) = -h(x)$, $h(x)$ is an odd function."
+      },
+      {
+        id: 23,
+        question: "The range of the rational function $f(x) = \\frac{2x + 1}{x - 1}$ for $x \\neq 1$ is ( )",
+        options: [
+          "A. $(-\\infty, 2) \\cup (2, +\\infty)$",
+          "B. $(-\\infty, 1) \\cup (1, +\\infty)$",
+          "C. $\\mathbb{R}$",
+          "D. $(-\\infty, 0) \\cup (0, +\\infty)$"
+        ],
+        correct: 0,
+        explanation: "Rewrite $f(x) = \\frac{2(x - 1) + 3}{x - 1} = 2 + \\frac{3}{x - 1}$. Since $\\frac{3}{x - 1} \\neq 0$ for any $x \\neq 1$, $f(x)$ can take any real value except $2$. Thus, the range is $(-\\infty, 2) \\cup (2, +\\infty)$."
+      },
+      {
+        id: 24,
+        question: "The domain of the function $f(x) = \\sqrt{1 - 2x}$ is ( )",
+        options: [
+          "A. $[\\frac{1}{2}, +\\infty)$",
+          "B. $(-\\infty, \\frac{1}{2}]$",
+          "C. $(-\\infty, \\frac{1}{2})$",
+          "D. $(\\frac{1}{2}, +\\infty)$"
+        ],
+        correct: 1,
+        explanation: "Require $1 - 2x \\ge 0 \\implies 2x \\le 1 \\implies x \\le \\frac{1}{2}$. The domain in interval notation is $(-\\infty, \\frac{1}{2}]$."
+      },
+      {
+        id: 25,
+        question: "Given that $f(2x + 1) = 4x^2 + 2x$, the value of $f(3)$ is ( )",
+        options: [
+          "A. $6$",
+          "B. $10$",
+          "C. $12$",
+          "D. $20$"
+        ],
+        correct: 0,
+        explanation: "To find $f(3)$, set $2x + 1 = 3 \\implies 2x = 2 \\implies x = 1$. Substitute $x = 1$ into $4x^2 + 2x$: $f(3) = 4(1)^2 + 2(1) = 4 + 2 = 6$."
+      }
+    ];
+
+    /* ==========================================================================
+       2. STATE MANAGEMENT & CLOUDFLARE RESULTS INTEGRATION
+       ========================================================================== */
+    const RESULTS_API_URL = 'https://csca-results.csca-test.workers.dev/submit';
+    const PENDING_KEY = 'csca_pending_result_unit3';
+    const EXAM_DURATION_SECONDS = 45 * 60; // 45 Minutes
+
+    let state = {
+      studentName: '',
+      studentId: '',
+      submissionId: null,
+      currentIndex: 0,
+      userAnswers: new Array(questions.length).fill(null),
+      markedQuestions: new Array(questions.length).fill(false),
+      timerRemaining: EXAM_DURATION_SECONDS,
+      timerInterval: null,
+      startTime: null,
+      endTime: null
+    };
+
+    /* ============ ENTRY & START ============ */
+    function handleStartExam(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById('student-name-input').value.trim();
+      const idInput = document.getElementById('student-id-input').value.trim();
+
+      if (!nameInput) return;
+
+      state.studentName = nameInput;
+      state.studentId = idInput || 'CSCA-MATH-2026';
+      state.submissionId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2);
+
+      document.getElementById('display-student-name').innerText = state.studentName;
+      document.getElementById('display-student-id').innerText = `ID: ${state.studentId}`;
+      document.getElementById('outro-student-name').innerText = state.studentName;
+      
+      const initials = state.studentName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('student-avatar').innerText = initials || 'FL';
+
+      switchScreen('screen-exam');
+
+      renderQuestionGrid();
+      loadQuestion(0);
+
+      state.startTime = new Date();
+      startTimer();
+    }
+
+    /* ============ RENDER QUESTION GRID ============ */
+    function renderQuestionGrid() {
+      const gridContainer = document.getElementById('q-grid');
+      gridContainer.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const cell = document.createElement('div');
+        cell.className = 'q-cell';
+        cell.innerText = idx + 1;
+        cell.onclick = () => loadQuestion(idx);
+
+        if (state.userAnswers[idx] !== null) cell.classList.add('answered');
+        if (state.markedQuestions[idx]) cell.classList.add('marked');
+        if (idx === state.currentIndex) cell.classList.add('current');
+
+        gridContainer.appendChild(cell);
+      });
+
+      const answeredCount = state.userAnswers.filter(a => a !== null).length;
+      document.getElementById('progress-count').innerText = `${answeredCount} / ${questions.length} Answered`;
+    }
+
+    /* ============ LOAD QUESTION ============ */
+    function loadQuestion(index) {
+      state.currentIndex = index;
+      const q = questions[index];
+
+      document.getElementById('question-counter').innerText = `Question ${index + 1} of ${questions.length}`;
+      const markBtn = document.getElementById('btn-mark');
+      if (state.markedQuestions[index]) {
+        markBtn.innerText = '🔖 Marked';
+        markBtn.style.color = 'var(--brand-orange)';
+      } else {
+        markBtn.innerText = '🔖 Mark for Review';
+        markBtn.style.color = 'var(--ink-soft)';
+      }
+
+      document.getElementById('btn-prev').disabled = index === 0;
+      document.getElementById('btn-next').disabled = index === questions.length - 1;
+
+      document.getElementById('question-text').innerHTML = q.question;
+
+      const optionsContainer = document.getElementById('options-list');
+      optionsContainer.innerHTML = '';
+
+      q.options.forEach((optText, optIdx) => {
+        const optItem = document.createElement('div');
+        optItem.className = 'option-item';
+        if (state.userAnswers[index] === optIdx) {
+          optItem.classList.add('selected');
+        }
+
+        optItem.innerHTML = `
+          <div class="option-radio"></div>
+          <div>${optText}</div>
+        `;
+
+        optItem.onclick = () => selectOption(optIdx);
+        optionsContainer.appendChild(optItem);
+      });
+
+      renderQuestionGrid();
+
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
+    }
+
+    /* ============ USER ACTIONS ============ */
+    function selectOption(optionIndex) {
+      state.userAnswers[state.currentIndex] = optionIndex;
+      loadQuestion(state.currentIndex);
+    }
+
+    function toggleMarkQuestion() {
+      const idx = state.currentIndex;
+      state.markedQuestions[idx] = !state.markedQuestions[idx];
+      loadQuestion(idx);
+    }
+
+    function navigateQuestion(direction) {
+      const newIndex = state.currentIndex + direction;
+      if (newIndex >= 0 && newIndex < questions.length) {
+        loadQuestion(newIndex);
+      }
+    }
+
+    /* ============ TIMER LOGIC ============ */
+    function startTimer() {
+      updateTimerUI();
+      state.timerInterval = setInterval(() => {
+        state.timerRemaining--;
+        updateTimerUI();
+
+        if (state.timerRemaining <= 0) {
+          clearInterval(state.timerInterval);
+          alert("Time has expired! Submitting your exam automatically.");
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      const mins = Math.floor(state.timerRemaining / 60);
+      const secs = state.timerRemaining % 60;
+      const formatted = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      
+      const timerDisplay = document.getElementById('timer-display');
+      const timerTrack = document.getElementById('timer-track');
+      const timerFill = document.getElementById('timer-fill');
+
+      timerDisplay.innerText = formatted;
+
+      const pct = (state.timerRemaining / EXAM_DURATION_SECONDS) * 100;
+      timerFill.style.width = `${pct}%`;
+
+      if (state.timerRemaining <= 300) {
+        timerDisplay.classList.add('critical');
+        timerTrack.classList.add('critical');
+      }
+    }
+
+    /* ============ SUBMISSION & RESULTS ============ */
+    function confirmSubmitExam() {
+      const unanswered = state.userAnswers.filter(a => a === null).length;
+      let msg = "Are you sure you want to finish and submit your exam?";
+      if (unanswered > 0) {
+        msg = `You still have ${unanswered} unanswered question(s). ` + msg;
+      }
+      if (confirm(msg)) {
+        submitExam();
+      }
+    }
+
+    function submitExam() {
+      clearInterval(state.timerInterval);
+      state.endTime = new Date();
+
+      let score = 0;
+      const wrongQuestions = [];
+      questions.forEach((q, idx) => {
+        if (state.userAnswers[idx] === q.correct) {
+          score++;
+        } else {
+          wrongQuestions.push(idx + 1);
+        }
+      });
+
+      const percentage = Math.round((score / questions.length) * 100);
+      const passed = percentage >= 60;
+
+      const secondsSpent = Math.max(0, EXAM_DURATION_SECONDS - state.timerRemaining);
+      const spentMins = Math.floor(secondsSpent / 60);
+      const spentSecs = secondsSpent % 60;
+
+      const badge = document.getElementById('score-badge');
+      badge.innerText = passed ? 'PASSED' : 'NEEDS IMPROVEMENT';
+      badge.className = `score-badge ${passed ? 'passed' : 'failed'}`;
+
+      document.getElementById('stat-score').innerText = `${score} / ${questions.length}`;
+      document.getElementById('stat-pct').innerText = `${percentage}%`;
+      document.getElementById('stat-correct').innerText = score;
+      document.getElementById('stat-time').innerText = `${spentMins}m ${spentSecs}s`;
+
+      renderReviewList();
+
+      switchScreen('screen-outro');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Send result payload to Cloudflare D1 with Unit Test 3 metadata
+      submitResult({
+        id: state.submissionId,
+        username: `${state.studentName} [Unit 3]`,
+        candidateId: state.studentId,
+        test: "Unit Test 3",
+        unit: "Unit Test 3",
+        unitTest: 3,
+        topic: "Mathematics: Functions (Unit Test 3)",
+        score: score,
+        total: questions.length,
+        percent: percentage,
+        wrongQuestions: wrongQuestions,
+        startedAt: state.startTime ? state.startTime.toISOString() : null,
+        submittedAt: state.endTime.toISOString()
+      });
+    }
+
+    /* ============ CLOUDFLARE D1 BACKEND SYNC ============ */
+    async function postResult(data) {
+      const res = await fetch(RESULTS_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error('Server responded ' + res.status);
+    }
+
+    async function submitResult(data) {
+      const statusEl = document.getElementById('export-status');
+      if (statusEl) statusEl.textContent = 'Saving your results…';
+
+      try { localStorage.setItem(PENDING_KEY, JSON.stringify(data)); } catch (e) {}
+
+      const delays = [0, 1500, 4000];
+      for (const d of delays) {
+        if (d) await new Promise(r => setTimeout(r, d));
+        try {
+          await postResult(data);
+          try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+          if (statusEl) statusEl.textContent = '✅ Results saved (Unit Test 3).';
+          return;
+        } catch (err) {
+          console.error('Result upload failed:', err);
+        }
+      }
+      if (statusEl) statusEl.textContent = '⚠️ Could not save results. Keep this page open; retrying automatically.';
+      const t = setInterval(async () => {
+        try {
+          await postResult(data);
+          clearInterval(t);
+          try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+          if (statusEl) statusEl.textContent = '✅ Results saved (Unit Test 3).';
+        } catch (e) {}
+      }, 15000);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const raw = localStorage.getItem(PENDING_KEY);
+        if (raw) postResult(JSON.parse(raw)).then(() => localStorage.removeItem(PENDING_KEY)).catch(() => {});
+      } catch (e) {}
+    });
+
+    function renderReviewList() {
+      const reviewContainer = document.getElementById('review-list');
+      reviewContainer.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const userAns = state.userAnswers[idx];
+        const isCorrect = userAns === q.correct;
+        const isSkipped = userAns === null;
+
+        let statusClass = isCorrect ? 'is-correct' : (isSkipped ? 'is-skipped' : 'is-incorrect');
+        
+        const item = document.createElement('div');
+        item.className = `review-item ${statusClass}`;
+
+        const userAnsText = isSkipped ? '<em>Not Answered</em>' : q.options[userAns];
+        const correctAnsText = q.options[q.correct];
+
+        item.innerHTML = `
+          <div class="review-q-num">Question ${idx + 1}</div>
+          <div class="review-q-text">${q.question}</div>
+          <div class="review-ans user-ans">Your Answer: <span>${userAnsText}</span></div>
+          ${!isCorrect ? `<div class="review-ans correct-ans">Correct Answer: <span>${correctAnsText}</span></div>` : ''}
+          <div class="review-exp"><strong>Explanation:</strong> ${q.explanation}</div>
+        `;
+
+        reviewContainer.appendChild(item);
+      });
+
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
+    }
+
+    function switchScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('is-active'));
+      document.getElementById(screenId).classList.add('is-active');
+    }
+
+    function restartExam() {
+      state.currentIndex = 0;
+      state.userAnswers = new Array(questions.length).fill(null);
+      state.markedQuestions = new Array(questions.length).fill(false);
+      state.timerRemaining = EXAM_DURATION_SECONDS;
+      state.submissionId = null;
+      
+      const statusEl = document.getElementById('export-status');
+      if (statusEl) statusEl.textContent = '';
+
+      const timerDisplay = document.getElementById('timer-display');
+      const timerTrack = document.getElementById('timer-track');
+      timerDisplay.classList.remove('critical');
+      timerTrack.classList.remove('critical');
+
+      switchScreen('screen-entry');
+    }
+
+    /* ==========================================================================
+       3. INTERACTIVE CANVAS BACKGROUND FOR ENTRY SCREEN
+       ========================================================================== */
+    (function initInteractiveCanvas() {
+      const canvas = document.getElementById('entry-bg-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const particles = [];
+      const particleCount = 45;
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.6,
+          vy: (Math.random() - 0.5) * 0.6,
+          radius: Math.random() * 2 + 1,
+          alpha: Math.random() * 0.5 + 0.2
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Mathematical harmonic wave in CSCA brand green
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(52, 211, 153, 0.2)';
+        ctx.lineWidth = 2;
+        const time = Date.now() * 0.001;
+
+        for (let x = 0; x < width; x += 10) {
+          const y = Math.sin(x * 0.005 + time) * 35 + Math.cos(x * 0.01 - time * 0.5) * 20 + height * 0.5;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Particle network
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0 || p.x > width) p.vx *= -1;
+          if (p.y < 0 || p.y > height) p.vy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(167, 243, 208, ${p.alpha})`;
+          ctx.fill();
+
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(52, 211, 153, ${0.15 * (1 - dist / 120)})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    })();
+  </script>
+</body>
+</html>
